@@ -41,7 +41,7 @@ header{position:fixed;top:3px;left:0;right:0;z-index:100;height:52px;background:
 .hdr-module-badge{font-family:var(--mono);font-size:9px;padding:3px 8px;border-radius:3px;background:var(--blue-lt);color:var(--blue);letter-spacing:.5px;border:1px solid rgba(0,87,184,0.2)}
 
 /* ── SLIDES CONTAINER ── */
-.slides-container{position:fixed;inset:0;top:55px;overflow:hidden}
+.slides-container{position:fixed;inset:0;top:55px;bottom:36px;overflow:hidden}
 .slide{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;pointer-events:none;transform:translateX(60px);transition:opacity .45s ease,transform .45s cubic-bezier(.25,.46,.45,.94)}
 .slide.active{opacity:1;pointer-events:all;transform:translateX(0)}
 .slide.exit-left{opacity:0;transform:translateX(-60px)}
@@ -342,6 +342,127 @@ footer{position:fixed;bottom:0;left:0;right:0;z-index:100;height:36px;background
   header, footer, .nav-btn, .progress-bar { display: none !important; }
   .slides-container { position: static; top: 0; overflow: visible; }
   .slide { position: static; opacity: 1 !important; transform: none !important; page-break-after: always; height: 100vh !important; display: block !important; }
+}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE — Fit to screen on all devices
+   ══════════════════════════════════════════ */
+
+/* --- Shared fluid scale for all slides --- */
+@media (max-height: 800px) {
+  .hero-content { padding: 24px 36px; }
+  .slide-title  { font-size: clamp(22px, 3.5vw, 36px) !important; margin-bottom: 10px !important; }
+  .slide-body   { font-size: clamp(14px, 1.8vw, 18px) !important; }
+  .benefit-item { padding: 10px 12px; }
+  .benefit-icon { width: 32px; height: 32px; font-size: 16px; }
+  .benefit-text-title { font-size: 15px !important; }
+  .benefit-text-body  { font-size: 13px !important; }
+  .benefit-list { gap: 8px; }
+  .s-content, .s-content-dark { padding: 18px 36px 14px; }
+  .cover-title  { font-size: clamp(50px, 9vw, 90px) !important; }
+  .mod-title    { font-size: clamp(32px, 6vw, 60px) !important; }
+  .mod-desc     { font-size: clamp(14px, 2vw, 20px) !important; }
+}
+
+/* --- Slide 03: Portafolio — hero-content panel scrollable --- */
+/* Make the left panel scrollable so cards + detail never overflow */
+.hero-split > .hero-content {
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* thin scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: var(--smoke3) transparent;
+}
+
+/* Reduce model card padding on small heights */
+@media (max-height: 800px) {
+  .model-card-sm { padding: 8px 6px; }
+  .mc-name  { font-size: 13px !important; }
+  .mc-pbv   { font-size: 8px !important; }
+  .mc-trans { font-size: 7px !important; }
+  .model-row { margin-bottom: 8px; gap: 6px; }
+  .model-detail-panel { padding: 12px; }
+  .model-detail-panel.show { max-height: 160px; overflow-y: auto; }
+  .spec-val { font-size: 13px !important; }
+  .spec-lbl { font-size: 7px !important; }
+  .spec-box { padding: 6px; }
+  .model-specs-grid { gap: 4px; margin-top: 6px; }
+  .slide-eyebrow { margin-bottom: 4px !important; }
+  .hero-content { padding: 16px 24px !important; }
+}
+
+/* --- Laptop/medium screens: 1024–1366px wide --- */
+@media (max-width: 1366px) {
+  .hero-content { padding: 28px 40px; }
+  .slide-title  { font-size: clamp(24px, 3vw, 40px) !important; }
+}
+
+@media (max-width: 1200px) {
+  .hero-content { padding: 20px 28px; }
+  .slide-title  { font-size: clamp(22px, 2.8vw, 36px) !important; margin-bottom: 10px !important; }
+  .slide-body   { font-size: clamp(13px, 1.6vw, 17px) !important; }
+  .model-card-sm { padding: 10px 8px; }
+  .mc-name { font-size: 14px !important; }
+  .model-detail-panel { padding: 14px; }
+  .spec-val { font-size: 14px !important; }
+  .s-content, .s-content-dark { padding: 20px 40px 16px; }
+  .cover-title { font-size: clamp(48px, 8vw, 88px) !important; }
+}
+
+/* --- Cards & grids scale on smaller widths --- */
+@media (max-width: 1100px) {
+  .cards-4 { grid-template-columns: 1fr 1fr; }
+  .testigos-grid { grid-template-columns: repeat(3, 1fr); }
+  .model-specs-grid { grid-template-columns: repeat(2, 1fr); }
+  .hero-split { grid-template-columns: 52% 48%; }
+}
+
+/* --- Small laptops / tablets landscape (768–1023px) --- */
+@media (max-width: 1024px) {
+  .hero-split { grid-template-columns: 1fr; grid-template-rows: 1fr; }
+  .hero-img { display: none; }           /* hide decorative image to gain space */
+  .hero-content { padding: 20px 32px !important; height: 100%; }
+  .cover-title  { font-size: clamp(42px, 7vw, 72px) !important; }
+  .mod-title    { font-size: clamp(28px, 5vw, 52px) !important; }
+  .cards-3 { grid-template-columns: 1fr 1fr; }
+  .cards-4 { grid-template-columns: 1fr 1fr; }
+  .testigos-grid { grid-template-columns: repeat(3, 1fr); }
+  .regen-step-title { font-size: 15px !important; }
+  .regen-step-body  { font-size: 13px !important; }
+  .alert { font-size: 14px !important; padding: 12px 14px; }
+  .big-stat-val { font-size: 40px !important; }
+  .quiz-wrap { padding: 16px 32px; }
+  .inspection-list { grid-template-columns: 1fr 1fr; }
+  .slide-title { font-size: clamp(20px, 2.6vw, 34px) !important; }
+}
+
+/* --- Combined small + short screens (laptops 768px wide & 768px tall) --- */
+@media (max-width: 1024px) and (max-height: 800px) {
+  .benefit-list { gap: 6px; }
+  .benefit-item { padding: 8px 10px; }
+  .benefit-text-title { font-size: 13px !important; }
+  .benefit-text-body  { font-size: 11px !important; }
+  .model-row { gap: 5px; margin-bottom: 6px; }
+  .model-card-sm { padding: 6px 4px; }
+  .mc-name { font-size: 12px !important; }
+}
+
+/* --- Very short screens (e.g. 768px height) --- */
+@media (max-height: 700px) {
+  header { height: 42px !important; }
+  footer { height: 28px !important; }
+  .slides-container { top: 45px !important; }
+  .hero-content { padding: 12px 20px !important; }
+  .slide-title  { font-size: clamp(18px, 3vw, 28px) !important; margin-bottom: 6px !important; }
+  .slide-body   { font-size: 12px !important; }
+  .benefit-text-title { font-size: 12px !important; }
+  .benefit-text-body  { font-size: 11px !important; }
+  .benefit-item { padding: 6px 10px; }
+  .benefit-list { gap: 5px; }
+  .model-card-sm { padding: 4px; }
+  .mc-name { font-size: 11px !important; }
+  .model-detail-panel.show { max-height: 120px; overflow-y: auto; }
+  .cover-title { font-size: clamp(36px, 7vw, 64px) !important; }
 }
 </style>
 
