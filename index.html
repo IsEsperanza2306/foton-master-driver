@@ -4,7 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Master Driver 2.0 — Foton México</title>
-<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@200;300;400;500;600;700;800;900&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#000000">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
 <style>
 :root {
@@ -464,6 +466,403 @@ footer{position:fixed;bottom:0;left:0;right:0;z-index:100;height:36px;background
   .model-detail-panel.show { max-height: 120px; overflow-y: auto; }
   .cover-title { font-size: clamp(36px, 7vw, 64px) !important; }
 }
+
+/* ══════════════════════════════════════════════════════════
+   ESTILO APPLE · capa de diseño (tema oscuro tipo keynote)
+   Redefine la paleta, tipografía, controles y transiciones
+   sin cambiar la lógica de quizzes, testigos ni modelos.
+══════════════════════════════════════════════════════════ */
+:root{
+  --white:#000;--off:rgba(255,255,255,.055);--off2:rgba(255,255,255,.09);
+  --blue:#0A84FF;--blue2:#409CFF;--blue3:#64B5FF;--blue-lt:rgba(10,132,255,.14);--blue-md:rgba(10,132,255,.24);
+  --ink:#F5F5F7;--ink2:#E5E5EA;--ink3:#C7C7CC;
+  --smoke:#A1A1A6;--smoke2:#8E8E93;--smoke3:rgba(255,255,255,.12);
+  --green:#30D158;--green-lt:rgba(48,209,88,.13);
+  --red:#FF453A;--red-lt:rgba(255,69,58,.13);
+  --amber:#FF9F0A;--amber-lt:rgba(255,159,10,.13);
+  --amber-dark:#FFB340;--amber-darkest:#FFD60A;--green-dark:#30D158;
+  --rule:rgba(255,255,255,.08);
+  --exo:'Inter',-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Roboto,sans-serif;
+  --disp:'Archivo','Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
+  --glass:rgba(28,28,32,.62);--stroke:rgba(255,255,255,.1);
+  --ease:cubic-bezier(.22,1,.36,1);
+  --bar:56px;
+}
+html,body{background:#000}
+body{color:var(--ink);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;letter-spacing:-.011em}
+::selection{background:rgba(10,132,255,.45)}
+
+/* Paneles que el diseño original pintaba con --ink como fondo siguen oscuros */
+[style*="background:var(--ink)"],[style*="background: var(--ink)"]{background:#000!important}
+[style*="background:var(--ink2)"]{background:#111114!important}
+
+/* ── Barra superior ── */
+.progress-bar{height:2px;background:transparent;z-index:210}
+.progress-fill{background:linear-gradient(90deg,#0A84FF,#64D2FF);box-shadow:0 0 12px rgba(10,132,255,.8)}
+header{top:0;height:var(--bar);background:rgba(0,0,0,.55);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid rgba(255,255,255,.07);padding:0 clamp(16px,2.4vw,32px);gap:16px}
+.hdr-brand{font-family:var(--disp);font-size:13px;font-weight:800;letter-spacing:.02em;text-transform:none;color:#fff;white-space:nowrap}
+.hdr-brand b{font-weight:500;color:var(--smoke);margin-left:2px}
+.hdr-brand-dot{width:8px;height:8px;background:#0A84FF;box-shadow:0 0 10px #0A84FF}
+.hdr-mid{flex:1;justify-content:center;max-width:520px}
+#hdrDots{width:auto!important;flex:1;gap:5px!important}
+#hdrDots>div{height:4px!important;background:rgba(255,255,255,.14)!important;border-radius:4px!important;cursor:pointer;transition:transform .3s var(--ease),background .2s}
+#hdrDots>div:hover{transform:scaleY(1.8);background:rgba(255,255,255,.28)!important}
+#hdrDots>div>div{background:#0A84FF!important;border-radius:4px}
+.hdr-info{gap:8px}
+.hdr-module-badge,.hdr-audience-badge{font-family:var(--exo);font-size:11px;font-weight:600;letter-spacing:.01em;padding:5px 11px;border-radius:999px;text-transform:none}
+.hdr-module-badge{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.1)}
+.hdr-audience-badge.vendedor{background:rgba(255,159,10,.14);color:#FFB340;border-color:rgba(255,159,10,.3)}
+.hdr-audience-badge.operador{background:rgba(48,209,88,.14);color:#30D158;border-color:rgba(48,209,88,.3)}
+.hdr-slide-num{display:none}
+
+/* ── Controles flotantes (HUD) ── */
+footer,.nav-btn{display:none!important}
+.hud{position:fixed;left:50%;bottom:clamp(14px,2.4vh,26px);transform:translateX(-50%);z-index:220;display:flex;align-items:center;gap:4px;padding:6px;border-radius:999px;background:var(--glass);backdrop-filter:saturate(180%) blur(24px);-webkit-backdrop-filter:saturate(180%) blur(24px);border:1px solid var(--stroke);box-shadow:0 20px 50px rgba(0,0,0,.55);transition:opacity .5s var(--ease),transform .5s var(--ease)}
+body.idle .hud{opacity:0;transform:translate(-50%,16px);pointer-events:none}
+body.idle{cursor:none}
+.hud button{width:40px;height:40px;border-radius:50%;border:0;background:transparent;color:#fff;display:grid;place-items:center;cursor:pointer;transition:background .2s,opacity .2s}
+.hud button:hover:not(:disabled){background:rgba(255,255,255,.12)}
+.hud button:disabled{opacity:.28;cursor:default}
+.hud svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.hud .cnt{font-family:var(--disp);font-weight:700;font-size:13px;color:var(--smoke);padding:0 10px;font-variant-numeric:tabular-nums;white-space:nowrap;min-width:64px;text-align:center}
+.hud .cnt b{color:#fff}
+.hud .sep{width:1px;height:20px;background:rgba(255,255,255,.14);margin:0 4px}
+
+/* ── Escenario y transiciones tipo keynote ── */
+.slides-container{top:var(--bar);bottom:0}
+.slide{transform:scale(1.035);filter:blur(10px);visibility:hidden;transition:opacity .75s var(--ease),transform .9s var(--ease),filter .75s var(--ease),visibility 0s .9s}
+.slide.active{transform:none;filter:none;visibility:visible;transition:opacity .75s var(--ease),transform .9s var(--ease),filter .75s var(--ease),visibility 0s}
+.slide.exit-left{transform:scale(.965);filter:blur(10px)}
+
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes kb{from{transform:scale(1.12)}to{transform:scale(1)}}
+@keyframes glow{0%,100%{opacity:.55}50%{opacity:1}}
+.slide.active .hero-content>*,.slide.active .cover-content>*,.slide.active .s-module>*:not(.grid-bg),.slide.active .quiz-header>*{animation:rise .9s var(--ease) both}
+.slide.active .hero-content>*:nth-child(2),.slide.active .cover-content>*:nth-child(2),.slide.active .s-module>*:nth-child(2){animation-delay:.08s}
+.slide.active .hero-content>*:nth-child(3),.slide.active .cover-content>*:nth-child(3),.slide.active .s-module>*:nth-child(3){animation-delay:.16s}
+.slide.active .hero-content>*:nth-child(4),.slide.active .cover-content>*:nth-child(4),.slide.active .s-module>*:nth-child(4){animation-delay:.24s}
+.slide.active .hero-content>*:nth-child(5),.slide.active .cover-content>*:nth-child(5),.slide.active .s-module>*:nth-child(5){animation-delay:.32s}
+.slide.active .hero-content>*:nth-child(n+6),.slide.active .cover-content>*:nth-child(n+6),.slide.active .s-module>*:nth-child(n+6){animation-delay:.4s}
+.slide.active .benefit-item,.slide.active .regen-step,.slide.active .insp-item{animation:rise .8s var(--ease) both}
+.slide.active .benefit-item:nth-child(2),.slide.active .regen-step:nth-child(2),.slide.active .insp-item:nth-child(2){animation-delay:.34s}
+.slide.active .benefit-item:nth-child(3),.slide.active .regen-step:nth-child(3),.slide.active .insp-item:nth-child(3){animation-delay:.42s}
+.slide.active .benefit-item:nth-child(4),.slide.active .regen-step:nth-child(4),.slide.active .insp-item:nth-child(4){animation-delay:.5s}
+.slide.active .benefit-item:nth-child(1),.slide.active .regen-step:nth-child(1),.slide.active .insp-item:nth-child(1){animation-delay:.26s}
+
+/* ── Imágenes a sangre con movimiento lento ── */
+.hero-split{overflow:hidden;position:relative}
+.hero-img{overflow:hidden;background-color:#000}
+.slide.active .hero-img{animation:kb 16s ease-out both}
+.hero-img::after{background:linear-gradient(90deg,rgba(0,0,0,0) 40%,#000 100%)!important}
+.hero-split>.hero-img:last-child::after{background:linear-gradient(270deg,rgba(0,0,0,0) 40%,#000 100%)!important}
+.hero-content{position:relative;z-index:2}
+.s-module,.s-cover{background-color:#000;isolation:isolate}
+.s-module::before{background:radial-gradient(ellipse 70% 60% at 50% 45%,rgba(10,132,255,.22),transparent 70%)!important;animation:glow 6s ease-in-out infinite}
+.s-module::after,.s-cover::after{content:'';position:absolute;inset:auto 0 0 0;height:40%;background:linear-gradient(0deg,#000,transparent);pointer-events:none;z-index:-1}
+.grid-bg{opacity:.5;-webkit-mask-image:radial-gradient(ellipse at center,#000 30%,transparent 75%);mask-image:radial-gradient(ellipse at center,#000 30%,transparent 75%)}
+
+/* ── Tipografía ── */
+.cover-title,.mod-title{font-family:var(--disp)!important;font-weight:900!important;text-transform:none!important;letter-spacing:-.045em!important;line-height:.95!important;background:linear-gradient(180deg,#fff 30%,#AFC8E8);-webkit-background-clip:text;background-clip:text;color:transparent!important;text-shadow:none!important;padding-bottom:.06em}
+.cover-title span,.mod-title span{background:linear-gradient(90deg,#64B5FF,#0A84FF 60%,#64D2FF);-webkit-background-clip:text;background-clip:text;color:transparent!important}
+.mod-title{font-size:clamp(46px,7.2vw,112px)!important}
+.cover-title{font-size:clamp(56px,9vw,140px)!important}
+.cover-title span[style*="font-size"]{font-size:.62em!important}
+.mod-num{font-family:var(--exo)!important;font-weight:600;font-size:13px!important;letter-spacing:.14em!important;color:var(--blue3)!important;display:inline-flex;align-items:center;gap:10px;padding:7px 16px;border-radius:999px;background:rgba(10,132,255,.12);border:1px solid rgba(100,181,255,.25)}
+.mod-desc,.cover-sub{font-family:var(--exo);font-weight:400!important;color:rgba(235,235,245,.72)!important;font-size:clamp(16px,1.6vw,23px)!important;line-height:1.5!important;letter-spacing:-.01em;text-wrap:balance}
+.cover-eyebrow{font-family:var(--exo);font-weight:600;letter-spacing:.14em;color:var(--blue3)}
+.cover-pill{font-family:var(--exo);font-weight:600;font-size:13px;letter-spacing:0;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:#fff;backdrop-filter:blur(12px);padding:8px 16px}
+.slide-eyebrow{font-family:var(--exo)!important;font-size:12px!important;font-weight:700;letter-spacing:.12em;color:var(--blue3)}
+.slide-eyebrow::before{width:18px;height:2px;border-radius:2px;background:currentColor}
+.slide-title{font-family:var(--disp)!important;font-weight:800!important;letter-spacing:-.035em!important;line-height:1.02!important;color:#fff;text-wrap:balance}
+.slide-body{color:rgba(235,235,245,.7);font-weight:400;line-height:1.55}
+.slide-body strong{color:#fff}
+[style*="font-family:var(--exo)"][style*="font-weight:900"]{font-family:var(--disp)!important;letter-spacing:-.03em!important}
+
+/* ── Tarjetas de vidrio ── */
+.card,.benefit-item,.alert,.regen-step,.model-card-sm,.model-detail-panel,.spec-box,.insp-item,.quiz-opt,.testigo-card,.dpf-box,.dpf-stat{border-radius:18px!important;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.card,.benefit-item,.model-detail-panel,.insp-item,.testigo-card{background:rgba(255,255,255,.055)!important;border:1px solid rgba(255,255,255,.1)!important;transition:transform .5s var(--ease),border-color .3s,background .3s}
+.benefit-item:hover,.card:hover,.insp-item:hover{transform:translateY(-3px);border-color:rgba(100,181,255,.35)!important;background:rgba(255,255,255,.08)!important;box-shadow:none}
+.benefit-item{padding:16px 18px}
+.benefit-icon,.card-icon{border-radius:12px!important;color:#fff}
+.benefit-icon i,.alert-icon i{font-size:.85em}
+.benefit-icon-blue{background:linear-gradient(135deg,rgba(10,132,255,.35),rgba(10,132,255,.12))!important;color:#64B5FF}
+.benefit-icon-green{background:linear-gradient(135deg,rgba(48,209,88,.32),rgba(48,209,88,.1))!important;color:#30D158}
+.benefit-icon-amber{background:linear-gradient(135deg,rgba(255,159,10,.32),rgba(255,159,10,.1))!important;color:#FF9F0A}
+.benefit-text-title,.card-title,.regen-step-title{color:#fff!important;font-weight:650;letter-spacing:-.02em}
+.benefit-text-body,.card-body,.regen-step-body{color:rgba(235,235,245,.62)!important}
+.alert{border-width:1px!important;color:rgba(235,235,245,.85)!important}
+.alert strong{color:#fff}
+.alert-blue{background:rgba(10,132,255,.12)!important;border-color:rgba(10,132,255,.3)!important}
+.alert-amber{background:rgba(255,159,10,.11)!important;border-color:rgba(255,159,10,.3)!important}
+.alert-amber strong{color:#FFB340}
+.alert-red{background:rgba(255,69,58,.11)!important;border-color:rgba(255,69,58,.3)!important}
+.alert-red strong{color:#FF6961}
+.alert-green{background:rgba(48,209,88,.1)!important;border-color:rgba(48,209,88,.28)!important}
+.alert-green strong{color:#30D158}
+.alert-icon{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:rgba(255,255,255,.08);font-size:16px!important}
+.alert-blue .alert-icon{color:#64B5FF}.alert-amber .alert-icon{color:#FF9F0A}.alert-red .alert-icon{color:#FF453A}.alert-green .alert-icon{color:#30D158}
+.regen-step{background:rgba(255,255,255,.05)!important;border:1px solid rgba(255,255,255,.1)!important}
+.regen-step.safe{background:rgba(48,209,88,.08)!important;border-color:rgba(48,209,88,.28)!important}
+.regen-step.danger{background:rgba(255,69,58,.08)!important;border-color:rgba(255,69,58,.3)!important}
+.regen-step-num{font-family:var(--disp)}
+[style*="border-left:4px solid"],[style*="border-left: 4px solid"]{border-radius:16px!important;border:1px solid rgba(255,255,255,.1)!important;border-left-width:4px!important}
+[style*="background:var(--green-lt)"][style*="border-left"]{border-left-color:#30D158!important}
+[style*="background:var(--amber-lt)"][style*="border-left"]{border-left-color:#FF9F0A!important}
+[style*="background:var(--red-lt)"][style*="border-left"]{border-left-color:#FF453A!important}
+[style*="border-radius:10px"],[style*="border-radius:12px"],[style*="border-radius: 12px"],[style*="border-radius:8px"],[style*="border-radius: 8px"]{border-radius:16px!important}
+
+/* ── Portafolio ── */
+.model-card-sm{background:rgba(255,255,255,.05)!important;border:1px solid rgba(255,255,255,.1)!important;padding:14px 10px;transition:all .35s var(--ease)}
+.model-card-sm:hover{background:rgba(255,255,255,.09)!important;transform:translateY(-2px)}
+.model-card-sm.selected{background:rgba(10,132,255,.18)!important;border-color:#0A84FF!important;box-shadow:0 0 0 1px #0A84FF,0 10px 30px rgba(10,132,255,.25)}
+.mc-name{font-family:var(--disp);letter-spacing:-.02em}
+.model-card-sm.selected .mc-name{color:#fff}
+.mc-pbv{font-family:var(--mono)}
+.mc-trans{border-radius:999px;padding:3px 8px;font-family:var(--exo);font-weight:600}
+.spec-box{background:rgba(255,255,255,.06)!important;border:1px solid rgba(255,255,255,.08)!important}
+.spec-val{font-family:var(--disp);color:#fff}
+#portfolioImg{transition:background-image .5s var(--ease)!important}
+
+/* ── Quiz ── */
+.quiz-wrap{justify-content:center;padding:28px clamp(20px,5vw,60px) 110px!important;background:radial-gradient(ellipse 60% 50% at 50% 0%,rgba(10,132,255,.16),transparent 70%),#000}
+.quiz-question{font-family:var(--disp);font-weight:800;letter-spacing:-.03em;color:#fff;font-size:clamp(22px,2.8vw,36px);max-width:860px;text-wrap:balance}
+.quiz-options{max-width:860px;gap:12px}
+.quiz-opt{background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.12);color:#fff;font-family:var(--exo);font-size:clamp(14px,1.2vw,17px);padding:18px 20px;transition:all .3s var(--ease)}
+.quiz-opt:hover:not(.answered){background:rgba(10,132,255,.16);border-color:#0A84FF;color:#fff;transform:translateY(-2px)}
+.quiz-opt.correct{background:rgba(48,209,88,.16);border-color:#30D158;color:#fff}
+.quiz-opt.wrong{background:rgba(255,69,58,.14);border-color:#FF453A;color:#fff}
+.quiz-opt-icon{border-width:1.5px}
+.quiz-feedback{max-width:860px;border-radius:16px;font-size:15px;padding:14px 18px}
+.quiz-feedback.correct-fb{background:rgba(48,209,88,.12);color:#A6F4B8}
+.quiz-feedback.wrong-fb{background:rgba(255,69,58,.12);color:#FFB4AE}
+.quiz-next-btn,.quiz-result button{border-radius:999px!important;background:#0A84FF!important;font-family:var(--exo);font-weight:600;padding:13px 30px;box-shadow:0 10px 30px rgba(10,132,255,.35)}
+.quiz-q-num{text-align:center;font-family:var(--exo);font-weight:600;letter-spacing:.1em;color:var(--smoke)}
+.quiz-prog-dot{width:22px;height:4px;border-radius:4px;background:rgba(255,255,255,.16)}
+.quiz-prog-dot.current{background:#0A84FF}
+.quiz-prog-dot.done{background:#30D158}
+.quiz-score{font-family:var(--disp);font-size:clamp(72px,10vw,128px);letter-spacing:-.05em;background:linear-gradient(180deg,#fff,#64B5FF);-webkit-background-clip:text;background-clip:text;color:transparent}
+.quiz-result-msg{color:rgba(235,235,245,.72)}
+
+/* ── Modal de testigos ── */
+.testigo-modal{background:rgba(0,0,0,.6);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.testigo-modal.open .tm-box{animation:pop .45s var(--ease) both}
+@keyframes pop{from{opacity:0;transform:scale(.94) translateY(12px)}to{opacity:1;transform:none}}
+.tm-box{background:rgba(28,28,32,.92);border:1px solid rgba(255,255,255,.12);border-radius:24px;box-shadow:0 40px 100px rgba(0,0,0,.6)}
+.tm-title{font-family:var(--disp);color:#fff;letter-spacing:-.02em}
+.tm-desc{color:rgba(235,235,245,.7);font-size:15px}
+.tm-action{border-radius:12px;font-size:14px}
+.tm-action.do{color:#A6F4B8}.tm-action.dont{color:#FFB4AE}
+.tm-close{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.1);display:grid;place-items:center;font-size:16px;color:#fff}
+[onclick^="openTestigo"]{transition:transform .4s var(--ease),box-shadow .3s!important}
+[onclick^="openTestigo"]:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 14px 34px rgba(0,0,0,.45)}
+
+/* ── Infografías (imagen completa) ── */
+.slide>div>img[src^="img_"]{width:auto!important;height:auto!important;max-width:calc(100% - 48px);max-height:calc(100% - 96px);border-radius:22px;box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.08)}
+.slide>div:has(>img[src^="img_"]){background:radial-gradient(ellipse 70% 60% at 50% 40%,rgba(10,132,255,.14),transparent 70%),#000!important;padding-bottom:40px}
+img[src^="img_pb"]{border-radius:20px!important}
+
+/* ── Tablas y otros ── */
+.comp-table thead th{border-bottom-color:rgba(255,255,255,.3);font-family:var(--exo);font-weight:600}
+.big-stat-val{font-family:var(--disp);letter-spacing:-.04em}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.18)}
+
+/* ── Responsivo ── */
+@media (max-width:1024px){
+  .hdr-mid{display:none}
+  .hero-split{grid-template-columns:1fr!important}
+}
+@media (max-width:640px){
+  :root{--bar:50px}
+  .hdr-brand b,.hdr-audience-badge{display:none!important}
+  .hud button{width:38px;height:38px}
+  .hud .fsb,.hud .sep{display:none}
+  .hero-content{padding:22px 20px 110px!important;justify-content:flex-start!important}
+  .quiz-options{grid-template-columns:1fr}
+  .cover-title{font-size:clamp(48px,15vw,80px)!important}
+  .mod-title{font-size:clamp(40px,12vw,64px)!important}
+  .slide>div{overflow-y:auto}
+  .slide>div[style*="grid-template-columns"]{display:flex!important;flex-direction:column}
+  .slide [style*="repeat(3,1fr)"],.slide [style*="repeat(3, 1fr)"],.slide [style*="columns:1fr 1fr 1fr"]{grid-template-columns:1fr 1fr!important}
+  .slide [style*="repeat(4,1fr)"][style*="flex:1"]{grid-template-columns:1fr!important}
+  .slide [style*="repeat(4,1fr)"][style*="flex:1"]>div{border-right:0!important}
+}
+/* ── Identidad FOTON ── */
+.hdr-brand{gap:12px}
+.hdr-brand-dot{display:none}
+.hdr-logo{height:20px;width:auto;display:block}
+.hdr-div{width:1px;height:18px;background:rgba(255,255,255,.22)}
+.hdr-brand b{margin-left:0;font-family:var(--exo);font-weight:500;color:rgba(235,235,245,.72)}
+.cover-logo{height:clamp(40px,5.2vw,68px);width:auto;margin-bottom:clamp(6px,1.4vh,16px);filter:drop-shadow(0 10px 30px rgba(10,132,255,.35))}
+.close-sign{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:clamp(14px,3vh,30px);padding-top:clamp(14px,3vh,26px);border-top:1px solid rgba(255,255,255,.14)}
+.close-sign img{height:clamp(30px,3.4vw,44px);width:auto}
+.close-sign span{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(235,235,245,.55)}
+.slide[data-module="FIN"] .cover-title{font-size:clamp(44px,6.2vw,92px)!important}
+.slide[data-module="FIN"] .cover-content{gap:14px}
+.slide[data-module="FIN"] .cover-sub{max-width:640px}
+.brandmark{position:fixed;right:clamp(14px,2vw,28px);bottom:clamp(18px,2.8vh,30px);width:30px;height:30px;opacity:.4;z-index:215;pointer-events:none;transition:opacity .4s}
+body.cover-on .brandmark{opacity:0}
+@media (max-width:640px){.hdr-logo{height:16px}.hdr-div{display:none}.brandmark{display:none}}
+
+/* ── Infografías recreadas (PBV, PBVC, cabina, manejo, velocidad, RPM, eco) ── */
+.xeq{position:relative;height:100%;display:flex;flex-direction:column;justify-content:center;gap:clamp(14px,2.4vh,26px);padding:clamp(24px,4vh,44px) clamp(20px,3vw,48px) 96px;background:radial-gradient(ellipse 80% 60% at 50% 60%,rgba(10,132,255,.14),transparent 70%),#000}
+.xeq-kicker{font-family:var(--disp);font-weight:800;font-size:clamp(22px,2.2vw,34px);letter-spacing:-.03em;color:#fff}
+.xeq-head{display:flex;align-items:stretch;gap:12px;flex-wrap:wrap}
+.xeq-tag{font-family:var(--disp);font-weight:900;font-size:clamp(22px,2.2vw,32px);letter-spacing:-.02em;padding:10px 22px;border-radius:16px;background:linear-gradient(135deg,#0A84FF,#0050C8);color:#fff;box-shadow:0 10px 30px rgba(10,132,255,.35)}
+.xeq-name{flex:1;min-width:220px;display:flex;align-items:center;padding:10px 20px;border-radius:16px;border:1px solid rgba(48,209,88,.45);background:rgba(48,209,88,.08);font-weight:700;font-size:clamp(16px,1.5vw,22px);color:#fff}
+.xeq-row{display:grid;align-items:end;gap:8px}
+.xeq-row.c3,.xeq-brace.c3{grid-template-columns:1fr 28px 1fr 28px 1fr}
+.xeq-row.c4{grid-template-columns:1fr 24px 1fr 24px 1fr 24px 1fr}
+.xeq-it{display:flex;flex-direction:column;align-items:center;gap:10px;min-width:0}
+.xeq-img{width:100%;aspect-ratio:1/1;display:flex;align-items:flex-end;justify-content:center;padding:8px;border-radius:20px;background:radial-gradient(ellipse 70% 26% at 50% 90%,rgba(255,255,255,.16),transparent 70%),linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08)}
+.xeq-img img{max-width:100%;max-height:100%;object-fit:contain;filter:drop-shadow(0 14px 18px rgba(0,0,0,.55))}
+.xeq-it.wide .xeq-img{align-items:center}
+.xeq-lbl{font-size:clamp(12px,1vw,15px);font-weight:600;color:#fff;text-align:center;padding:7px 12px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(100,181,255,.35);line-height:1.2}
+.xeq-op{align-self:center;margin-bottom:40px;font-family:var(--disp);font-weight:900;font-size:clamp(22px,2vw,32px);color:#0A84FF;text-align:center}
+.xeq-brace .br{grid-column:3/6;position:relative;height:22px;border:2px solid #64B5FF;border-top:0;border-radius:0 0 14px 14px;margin:0 12%}
+.xeq-brace .br span{position:absolute;left:50%;top:100%;transform:translate(-50%,12px);white-space:nowrap;font-weight:700;font-size:clamp(13px,1.1vw,16px);color:#fff;padding:8px 16px;border-radius:999px;background:rgba(255,69,58,.16);border:1.5px solid #FF453A}
+.xeq-brace .br::after{content:"";position:absolute;left:50%;top:100%;width:2px;height:12px;background:#64B5FF}
+
+.xs{height:100%;overflow-y:auto;scrollbar-width:none;display:flex;flex-direction:column;gap:clamp(14px,2.4vh,26px);padding:clamp(22px,3.6vh,40px) clamp(22px,4.4vw,64px) 104px;background:radial-gradient(ellipse 70% 50% at 80% 0%,rgba(10,132,255,.14),transparent 70%),#000}
+.xs::-webkit-scrollbar{display:none}
+.xs-head .slide-title{font-size:clamp(30px,3.6vw,54px)!important;margin-bottom:6px!important}
+.xs-lede{color:rgba(235,235,245,.72);font-size:clamp(15px,1.3vw,19px);line-height:1.5;max-width:72ch}
+.slide.active .xs-head,.slide.active .xg>*,.slide.active .xvel-l>*,.slide.active .xrpm-r>*,.slide.active .xeco-col>*,.slide.active .xeq>*{animation:rise .85s var(--ease) both}
+.slide.active .xg>*:nth-child(2),.slide.active .xeq>*:nth-child(2),.slide.active .xrpm-r>*:nth-child(2),.slide.active .xeco-col>*:nth-child(2){animation-delay:.08s}
+.slide.active .xg>*:nth-child(3),.slide.active .xeq>*:nth-child(3),.slide.active .xrpm-r>*:nth-child(3),.slide.active .xeco-col>*:nth-child(3){animation-delay:.16s}
+.slide.active .xg>*:nth-child(4),.slide.active .xeq>*:nth-child(4),.slide.active .xrpm-r>*:nth-child(4){animation-delay:.24s}
+.slide.active .xg>*:nth-child(5){animation-delay:.32s}
+.slide.active .xg>*:nth-child(n+6){animation-delay:.4s}
+.xg{display:grid;gap:14px}
+.xs>.xg{flex:1 0 auto!important}
+.xc,.xstep{background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:clamp(14px,1.6vw,20px);min-width:0}
+.xc h4,.xstep h4{font-family:var(--disp);font-weight:800;font-size:clamp(16px,1.35vw,20px);letter-spacing:-.02em;color:#fff;line-height:1.2;margin-bottom:6px}
+.xc h4 i{color:#30D158;margin-right:4px}
+.xc p,.xstep p{color:rgba(235,235,245,.75);font-size:clamp(14px,1.1vw,16px);line-height:1.5}
+.xc p b,.xstep p b{color:#fff}
+.xc p.em{color:#fff;font-weight:600;margin-top:4px}
+.xc p.em i{color:#30D158;margin-right:6px;font-size:.85em}
+.xph{position:relative;border-radius:22px;overflow:hidden;border:1px solid rgba(255,255,255,.1);background:#111;min-height:0}
+.xph img{width:100%;height:100%;object-fit:cover;display:block}
+.xalert{display:flex;align-items:flex-start;gap:10px;margin-top:12px;padding:12px 14px;border-radius:14px;font-size:clamp(14px,1.1vw,16px);line-height:1.4;color:#fff}
+.xalert.red{background:rgba(255,69,58,.14);border:1px solid rgba(255,69,58,.45)}
+.xalert.red i{color:#FF453A;font-size:1.15em;margin-top:1px}
+.xalert.big{margin:0;font-weight:700;font-size:clamp(15px,1.3vw,19px)}
+.xbadge{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:rgba(48,209,88,.14);border:1px solid rgba(48,209,88,.4);color:#30D158;font-weight:700;font-size:13px;letter-spacing:.02em;text-transform:uppercase}
+
+/* Cabina */
+.xg-cab{grid-template-columns:1.25fr 1fr 1fr;grid-template-rows:auto auto;flex:1}
+.xph-cab{grid-row:1/4;min-height:260px;background:linear-gradient(180deg,#e4e5e8,#c9cbcf)}
+.xph-cab img{object-fit:contain;object-position:center}
+.xstep{display:flex;gap:14px;align-items:flex-start}
+.xnum{flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-family:var(--disp);font-weight:900;font-size:17px;color:#fff;background:linear-gradient(135deg,#0A84FF,#0050C8);box-shadow:0 6px 18px rgba(10,132,255,.35)}
+.xstep.xwide{grid-column:2/4}
+.xstep.xok{grid-column:2/4;background:rgba(48,209,88,.08);border-color:rgba(48,209,88,.35)}
+.xstep.xok .xnum{background:linear-gradient(135deg,#30D158,#1E9E45);font-size:15px}
+.xico{display:flex;gap:12px;margin-top:10px;font-size:22px;color:#64B5FF}
+.xstep p i{color:#64B5FF}
+.xg-cab .xstep:nth-child(2),.xg-cab .xstep:nth-child(3){grid-row:1}
+
+/* Manejo seguro */
+.xg-man{grid-template-columns:repeat(3,minmax(0,1fr));flex:1}
+.xc-ph{display:flex;flex-direction:column;gap:12px;padding:0;overflow:hidden}
+.xc-ph img{width:100%;height:clamp(96px,15vh,150px);object-fit:cover;display:block}
+.xc-ph>div{padding:0 16px 16px}
+.xspeeds{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.xspeeds>div{display:flex;flex-direction:column}
+.xspeeds small,.xsp small{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(235,235,245,.55)}
+.xspeeds b{font-family:var(--disp);font-weight:900;font-size:clamp(30px,3vw,44px);letter-spacing:-.04em;color:#fff;line-height:1}
+.xspeeds em,.xsp em{font-style:normal;font-size:.42em;font-weight:700;color:#64B5FF;margin-left:4px;letter-spacing:0}
+.xc-list ol{list-style:none;counter-reset:n;display:flex;flex-direction:column;gap:9px}
+.xc-list ol li{counter-increment:n;display:flex;gap:10px;align-items:flex-start;color:rgba(235,235,245,.8);font-size:clamp(13px,1.05vw,15px);line-height:1.35}
+.xc-list ol li::before{content:counter(n);flex:none;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:800;background:rgba(10,132,255,.2);color:#64B5FF}
+.xc-list ol li b{color:#fff;font-weight:600}
+.xc-green{background:rgba(48,209,88,.08);border-color:rgba(48,209,88,.35)}
+.xc-green p.big{font-family:var(--disp);font-weight:900;font-size:clamp(18px,1.7vw,26px);letter-spacing:-.02em;color:#30D158;line-height:1.1;margin:4px 0 12px}
+.xbrake{display:flex;align-items:center;gap:10px;font-size:20px}
+.xbrake .tl{color:#FF9F0A}
+.xbrake .trk{color:#64B5FF}
+.xbrake .trk:last-child{opacity:.55}
+.xbrake .ln{flex:1;position:relative;height:2px;background:repeating-linear-gradient(90deg,#fff 0 8px,transparent 8px 14px);min-width:60px}
+.xbrake .ln b{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-family:var(--disp);font-size:13px;font-weight:800;color:#000;background:#30D158;padding:3px 10px;border-radius:8px;white-space:nowrap}
+.xgauge{display:flex;align-items:center;gap:10px;margin-top:14px;font-size:18px}
+.xgauge i:first-child{color:#FF9F0A}
+.xgauge i:last-child{color:#30D158}
+.xgauge span{flex:1;height:8px;border-radius:8px;background:linear-gradient(90deg,#FF453A,#FF9F0A 30%,#30D158 75%)}
+.xc-op{display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,rgba(10,132,255,.18),rgba(10,132,255,.05));border-color:rgba(100,181,255,.35);overflow:hidden}
+.xc-op>div{flex:1}
+.xc-op .quote{font-family:var(--disp);font-weight:800;font-size:clamp(16px,1.5vw,22px);color:#fff;letter-spacing:-.02em;line-height:1.2;margin-top:10px}
+.xc-op img{width:42%;max-width:170px;filter:drop-shadow(0 10px 16px rgba(0,0,0,.6))}
+
+/* Velocidad */
+.xg-vel{grid-template-columns:1fr 1.05fr;flex:1;align-items:stretch}
+.xvel-l{display:flex;flex-direction:column;gap:14px;min-width:0}
+.xc-list.chk ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.xc-list.chk li{font-family:var(--disp);font-weight:700;font-size:clamp(17px,1.6vw,24px);letter-spacing:-.02em;color:#fff}
+.xc-list.chk li i{color:#30D158;margin-right:10px}
+.xg-4{grid-template-columns:1fr 1fr;flex:1}
+.xtile{display:flex;flex-direction:column;justify-content:space-between;gap:10px;padding:16px;border-radius:18px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.1);min-width:0}
+.xtile>i{font-size:26px;color:#64B5FF}
+.xtile>b{font-size:clamp(13px,1.05vw,15px);font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.02em;line-height:1.3}
+.xsp small{grid-column:1/3}
+.xsp{display:inline-grid;grid-template-columns:auto auto;align-items:baseline;margin-right:18px;font-family:var(--disp);font-weight:900;font-size:clamp(24px,2.2vw,32px);color:#fff;letter-spacing:-.03em;line-height:1}
+.xtile .xbrake{font-size:17px}
+.xph-aero{display:flex}
+.xcap{position:absolute;left:14px;right:14px;bottom:14px;padding:14px 18px;border-radius:16px;background:rgba(0,0,0,.55);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.14);font-family:var(--disp);font-weight:800;font-size:clamp(16px,1.6vw,24px);letter-spacing:-.02em;color:#fff;text-align:center;text-transform:uppercase}
+
+/* RPM */
+.xg-rpm{grid-template-columns:.9fr 1.1fr;flex:1;align-items:stretch}
+.xc-tach{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:radial-gradient(ellipse at 50% 40%,rgba(255,69,58,.12),transparent 65%),rgba(255,255,255,.04)}
+.xtach{width:min(100%,360px);height:auto;filter:drop-shadow(0 20px 40px rgba(0,0,0,.6))}
+.xcap2{font-family:var(--disp);font-weight:800;font-size:clamp(18px,1.6vw,24px);color:#fff}
+.xlegend{display:flex;gap:16px;font-size:13px;color:rgba(235,235,245,.7)}
+.xlegend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px}
+.xrpm-r{display:flex;flex-direction:column;gap:12px;min-width:0}
+.xcons{display:flex;align-items:center;gap:16px;padding:10px;border-radius:18px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.1);flex:1;min-height:0}
+.xcons img{width:clamp(110px,14vw,190px);height:100%;max-height:150px;object-fit:cover;border-radius:12px;flex:none}
+.xcons p{font-family:var(--disp);font-weight:700;font-size:clamp(16px,1.5vw,22px);letter-spacing:-.02em;color:#fff;line-height:1.25}
+.xcons p i{color:#FF453A;margin-right:8px;font-size:.8em}
+.xcons-ico{flex:none;width:clamp(110px,14vw,190px);align-self:stretch;display:grid;place-items:center;border-radius:12px;background:rgba(255,69,58,.12);color:#FF453A;font-size:34px;min-height:70px}
+
+/* Eco */
+.xg-eco{grid-template-columns:1fr 1.5fr 1fr;flex:1;align-items:stretch}
+.xeco-col{display:flex;flex-direction:column;gap:12px;min-width:0}
+.xmini{flex:1;display:flex;flex-direction:column;justify-content:center;gap:10px}
+.xmini>i{font-size:22px;color:#64B5FF}
+.xmini p{color:#fff;font-weight:600;font-size:clamp(14px,1.2vw,18px)}
+.xph-eco{min-height:280px}
+.xph-eco .xbadge{position:absolute;left:14px;bottom:14px;backdrop-filter:blur(12px);background:rgba(0,0,0,.55)}
+.xtruck{flex:1;display:flex;flex-direction:column;justify-content:space-between;gap:8px;overflow:hidden}
+.xtruck img{align-self:center;max-width:78%;max-height:110px;object-fit:contain;filter:drop-shadow(0 10px 16px rgba(0,0,0,.6))}
+.xtruck .xgauge{margin-top:0}
+
+@media (max-width:1024px){
+  .xg-cab,.xg-man,.xg-vel,.xg-rpm,.xg-eco{grid-template-columns:1fr 1fr}
+  .xph-cab{grid-row:auto;grid-column:1/3;min-height:220px}
+  .xstep.xwide,.xstep.xok{grid-column:1/3}
+  .xg-cab .xstep:nth-child(2),.xg-cab .xstep:nth-child(3){grid-row:auto}
+  .xg-eco .xph-eco{grid-column:1/3;order:-1}
+  .xg-vel .xph-aero{min-height:260px}
+}
+@media (max-width:640px){
+  .xs{padding:20px 18px 110px}
+  .xg-cab,.xg-man,.xg-vel,.xg-rpm,.xg-eco,.xg-4{grid-template-columns:1fr}
+  .xph-cab,.xstep.xwide,.xstep.xok,.xg-eco .xph-eco{grid-column:auto}
+  .xeq{padding:22px 16px 110px;justify-content:flex-start;height:auto}
+  .xeq-row.c3,.xeq-brace.c3{grid-template-columns:1fr 18px 1fr 18px 1fr}
+  .xeq-row.c4{grid-template-columns:1fr 1fr;row-gap:14px}
+  .xeq-row.c4 .xeq-op{display:none}
+  .xeq-op{margin-bottom:34px;font-size:18px}
+  .xeq-lbl{font-size:11px;padding:6px 8px}
+  .xeq-brace .br span{font-size:12px}
+  .xcons img,.xcons-ico{width:96px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .slide,.slide.active{transition:opacity .3s!important;transform:none!important;filter:none!important}
+  *{animation:none!important}
+}
+@media print{.hud{display:none!important}.slide{visibility:visible!important;filter:none!important}}
 </style>
 
 </head>
@@ -472,12 +871,12 @@ footer{position:fixed;bottom:0;left:0;right:0;z-index:100;height:36px;background
 <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
 
 <header>
-  <div class="hdr-brand"><div class="hdr-brand-dot"></div>FOTON · MASTER DRIVER 2.0</div>
+  <div class="hdr-brand"><img class="hdr-logo" src="images/foton_logo_white.png" alt="FOTON"><i class="hdr-div"></i><b>Master Driver 2.0</b></div>
   <div class="hdr-mid" id="hdrDots"></div>
   <div class="hdr-info">
     <div class="hdr-audience-badge" id="audienceBadge">AMBOS</div>
     <div class="hdr-module-badge" id="moduleBadge">INTRO</div>
-    <div class="hdr-slide-num" id="slideNum">-- / --</div>
+    
   </div>
 </header>
 
@@ -488,6 +887,7 @@ footer{position:fixed;bottom:0;left:0;right:0;z-index:100;height:36px;background
   <div class="s-cover" style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background-image:linear-gradient(rgba(0,0,0,0.7), rgba(0,20,40,0.9)), url('images/foton_brand_logo_visual_1778698020628.png');background-size:cover;background-position:center;">
     <div class="grid-bg"></div>
     <div class="cover-content" style="text-align: center;">
+      <img class="cover-logo" src="images/foton_logo_white.png" alt="FOTON">
       <div class="cover-eyebrow" style="font-size: 16px; margin-bottom: 10px; justify-content: center;">Programa Oficial de FOTON México</div>
       <div class="cover-title" style="font-size: 110px; text-shadow: 0 10px 40px rgba(0,87,184,0.5);">MASTER<br><span style="color:#FFF;">DRIVER</span><br><span style="font-size:80px; color:var(--blue3);">2.0</span></div>
       <div class="cover-sub" style="font-size: 22px; max-width: 800px; margin-top: 20px;">Línea Foton S3–S12 · Euro VI + Euro V SCR</div>
@@ -505,19 +905,19 @@ footer{position:fixed;bottom:0;left:0;right:0;z-index:100;height:36px;background
       <div class="slide-body" style="font-size:18px; margin-bottom: 24px;">Conoce tu unidad FOTON a fondo para maximizar su rentabilidad y vida útil.</div>
     <div class="benefit-list">
       <div class="benefit-item">
-        <div class="benefit-icon benefit-icon-blue">🚛</div>
+        <div class="benefit-icon benefit-icon-blue"><i class="fa-solid fa-truck"></i></div>
         <div><div class="benefit-text-title">Conocer tu camión a fondo</div><div class="benefit-text-body">Portafolio S3–S12, capacidades reales, diferencias entre modelos y cómo elegir el correcto para cada cliente o misión de carga.</div></div>
       </div>
       <div class="benefit-item">
-        <div class="benefit-icon benefit-icon-green">⚙️</div>
+        <div class="benefit-icon benefit-icon-green"><i class="fa-solid fa-gears"></i></div>
         <div><div class="benefit-text-title">Dominar la caja AMT</div><div class="benefit-text-body">Entender que la AMT es una caja manual ZF con asistencia al cambio. No es automática. Cómo usarla bien para maximizar vida útil y rendimiento.</div></div>
       </div>
       <div class="benefit-item">
-        <div class="benefit-icon benefit-icon-blue">🌱</div>
+        <div class="benefit-icon benefit-icon-blue"><i class="fa-solid fa-leaf"></i></div>
         <div><div class="benefit-text-title">Euro VI — la norma que protege tu inversión</div><div class="benefit-text-body">Qué significa Euro VI, cómo funciona el sistema DPF + Urea/SCR y por qué ignorarlos puede costar decenas de miles de pesos.</div></div>
       </div>
       <div class="benefit-item">
-        <div class="benefit-icon benefit-icon-amber">💡</div>
+        <div class="benefit-icon benefit-icon-amber"><i class="fa-solid fa-lightbulb"></i></div>
         <div><div class="benefit-text-title">Operación diaria eficiente</div><div class="benefit-text-body">Inspección, niveles, manejo seguro, conducción económica y cómo interpretar cada testigo del tablero correctamente.</div></div>
       </div>
     </div>
@@ -527,7 +927,7 @@ footer{position:fixed;bottom:0;left:0;right:0;z-index:100;height:36px;background
 <!-- ══════════ SLIDE 2: PORTAFOLIO TITLE ══════════ -->
 <div class="slide" data-module="PORTAFOLIO">
   <div class="s-module" style="height:100%;background-image:linear-gradient(rgba(0,20,50,0.8), rgba(0,0,0,0.9)), url('images/foton_s5_truck_1778700718454.png');background-size:cover;background-position:center; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
-    <div class="mod-num" style="font-size: 16px; letter-spacing: 5px; color: var(--blue3); margin-bottom: 20px;">MÓDULO 2</div>
+    <div class="mod-num" style="font-size: 16px; letter-spacing: 5px; color: var(--blue3); margin-bottom: 20px;">MÓDULO 01</div>
     <div class="mod-title" style="font-size: 80px; margin-bottom: 30px;">Conoce<br>tu Foton</div>
     <div class="mod-desc" style="font-size: 24px; max-width: 800px; margin: 0 auto; color: white;">Portafolio S3–S12 AMT · Especificaciones técnicas · Cómo elegir el modelo correcto</div>
   </div>
@@ -600,8 +1000,13 @@ footer{position:fixed;bottom:0;left:0;right:0;z-index:100;height:36px;background
       </div>
     </div>
     <!-- Derecha: imagen referencia -->
-    <div style="position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#000;padding:20px;">
-      <img src="img_pbv.png" style="width:100%;max-height:100%;object-fit:contain;border-radius:10px;box-shadow:0 8px 40px rgba(0,0,0,.6);" alt="PBV — Conoce tu camión" onerror="this.style.opacity='.2'">
+    <div class="xeq">
+      <div class="xeq-top"><span class="xeq-kicker">Conoce tu camión.</span></div>
+      <div class="xeq-head"><span class="xeq-tag">PBV</span><span class="xeq-name">Peso Bruto Vehicular</span></div>
+      <div class="xeq-row c3">
+        <div class="xeq-it "><div class="xeq-img"><img src="images/md/chasis.png" alt=""></div><div class="xeq-lbl">Peso chasis cabina</div></div><div class="xeq-op">+</div><div class="xeq-it "><div class="xeq-img"><img src="images/md/caja.png" alt=""></div><div class="xeq-lbl">Peso de la aplicación</div></div><div class="xeq-op">+</div><div class="xeq-it "><div class="xeq-img"><img src="images/md/carga.png" alt=""></div><div class="xeq-lbl">Peso de la carga</div></div>
+      </div>
+      <div class="xeq-brace c3"><div class="br"><span>Carga sobre chasis</span></div></div>
     </div>
   </div>
 </div>
@@ -643,8 +1048,12 @@ footer{position:fixed;bottom:0;left:0;right:0;z-index:100;height:36px;background
       </div>
     </div>
     <!-- Derecha: imagen referencia -->
-    <div style="position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#000;padding:20px;">
-      <img src="img_pbvc.png" style="width:100%;max-height:100%;object-fit:contain;border-radius:10px;box-shadow:0 8px 40px rgba(0,0,0,.6);" alt="PBVC" onerror="this.style.opacity='.2'">
+    <div class="xeq">
+      <div class="xeq-top"><span class="xeq-kicker">Conoce tu camión.</span></div>
+      <div class="xeq-head"><span class="xeq-tag">PBVC</span><span class="xeq-name">Peso Bruto Vehicular Combinado</span></div>
+      <div class="xeq-row c4">
+        <div class="xeq-it "><div class="xeq-img"><img src="images/md/chasis.png" alt=""></div><div class="xeq-lbl">Peso chasis cabina</div></div><div class="xeq-op">+</div><div class="xeq-it "><div class="xeq-img"><img src="images/md/caja.png" alt=""></div><div class="xeq-lbl">Peso de la aplicación</div></div><div class="xeq-op">+</div><div class="xeq-it wide"><div class="xeq-img"><img src="images/md/remolque.png" alt=""></div><div class="xeq-lbl">Peso de remolque</div></div><div class="xeq-op">+</div><div class="xeq-it "><div class="xeq-img"><img src="images/md/carga.png" alt=""></div><div class="xeq-lbl">Peso de la carga</div></div>
+      </div>
     </div>
   </div>
 </div>
@@ -652,7 +1061,7 @@ footer{position:fixed;bottom:0;left:0;right:0;z-index:100;height:36px;background
 <!-- ══════════ SLIDE 5: CAJA AMT TITLE ══════════ -->
 <div class="slide" data-module="CAJA AMT">
   <div class="s-module" style="height:100%;background-image:linear-gradient(rgba(0,20,50,0.8), rgba(0,0,0,0.9)), url('images/foton_amt_shift_1778700843452.png');background-size:cover;background-position:center; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
-    <div class="mod-num" style="font-size: 16px; letter-spacing: 5px; color: var(--blue3); margin-bottom: 20px;">MÓDULO 5</div>
+    <div class="mod-num" style="font-size: 16px; letter-spacing: 5px; color: var(--blue3); margin-bottom: 20px;">MÓDULO 02</div>
     <div class="mod-title" style="font-size: 80px; margin-bottom: 30px;">Caja AMT<br>Manual<br>Asistida</div>
     <div class="mod-desc" style="font-size: 24px; max-width: 800px; margin: 0 auto; color: white;">No es automática. Es tu caja manual ZF con un actuador electrónico que hace el cambio por ti.</div>
   </div>
@@ -669,11 +1078,11 @@ footer{position:fixed;bottom:0;left:0;right:0;z-index:100;height:36px;background
         Es tu caja manual ZF con un actuador electrohidráulico. No hay convertidor de torque.
       </div>
       <div class="alert alert-blue" style="margin-bottom:16px;">
-        <span class="alert-icon">⚙️</span>
+        <span class="alert-icon"><i class="fa-solid fa-gears"></i></span>
         <div><strong>Mismos engranes. Mismo aceite.</strong><br>La única diferencia es que el sistema hace el cambio por ti, sin errores.</div>
       </div>
       <div class="alert alert-green">
-        <span class="alert-icon">✅</span>
+        <span class="alert-icon"><i class="fa-solid fa-circle-check"></i></span>
         <div><strong>Bajo costo de mantenimiento.</strong><br>Mismo taller y mecánicos que una manual.</div>
       </div>
     </div>
@@ -719,21 +1128,21 @@ footer{position:fixed;bottom:0;left:0;right:0;z-index:100;height:36px;background
       
       <div class="benefit-list" style="margin-top:20px;">
         <div class="benefit-item">
-          <div class="benefit-icon benefit-icon-blue" style="font-size:24px;">😌</div>
+          <div class="benefit-icon benefit-icon-blue" style="font-size:24px;"><i class="fa-solid fa-face-smile"></i></div>
           <div><div class="benefit-text-title" style="font-size:20px;">Menos fatiga</div><div class="benefit-text-body">El sistema hace hasta 1,500 cambios por turno por ti.</div></div>
         </div>
         <div class="benefit-item">
-          <div class="benefit-icon benefit-icon-green" style="font-size:24px;">⛽</div>
+          <div class="benefit-icon benefit-icon-green" style="font-size:24px;"><i class="fa-solid fa-gas-pump"></i></div>
           <div><div class="benefit-text-title" style="font-size:20px;">8–12% menos combustible</div><div class="benefit-text-body">Cambios de velocidad precisos = máximo rendimiento diésel.</div></div>
         </div>
         <div class="benefit-item">
-          <div class="benefit-icon benefit-icon-amber" style="font-size:24px;">🔧</div>
+          <div class="benefit-icon benefit-icon-amber" style="font-size:24px;"><i class="fa-solid fa-wrench"></i></div>
           <div><div class="benefit-text-title" style="font-size:20px;">30–40% menos reparaciones</div><div class="benefit-text-body">Cero errores humanos protege los sincronizadores y clutch.</div></div>
         </div>
       </div>
       
       <div class="alert alert-blue" style="margin-top:20px;">
-        <span class="alert-icon">💡</span>
+        <span class="alert-icon"><i class="fa-solid fa-lightbulb"></i></span>
         <div><strong>Cero curva de aprendizaje:</strong> En 2 horas dominas la unidad.</div>
       </div>
     </div>
@@ -779,7 +1188,7 @@ footer{position:fixed;bottom:0;left:0;right:0;z-index:100;height:36px;background
 <!-- ══════════ SLIDE 11: EURO VI TITLE ══════════ -->
 <div class="slide" data-module="EURO VI">
   <div class="s-module" style="height:100%;background-image:linear-gradient(rgba(0,20,50,0.8), rgba(0,0,0,0.9)), url('images/foton_euro6_dpf_1778697960474.png');background-size:cover;background-position:center; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
-    <div class="mod-num" style="font-size: 16px; letter-spacing: 5px; color: var(--blue3); margin-bottom: 20px;">MÓDULO 11</div>
+    <div class="mod-num" style="font-size: 16px; letter-spacing: 5px; color: var(--blue3); margin-bottom: 20px;">MÓDULO 03</div>
     <div class="mod-title" style="font-size: 80px; margin-bottom: 30px;">Norma<br>Euro VI</div>
     <div class="mod-desc" style="font-size: 24px; max-width: 800px; margin: 0 auto; color: white;">La norma de emisiones más estricta del mundo. Obligatoria en México desde 2025.</div>
   </div>
@@ -814,7 +1223,7 @@ footer{position:fixed;bottom:0;left:0;right:0;z-index:100;height:36px;background
 <!-- ══════════ SLIDE 13: DPF + Urea TITLE ══════════ -->
 <div class="slide" data-module="DPF + Urea">
   <div class="s-module" style="height:100%;background-image:linear-gradient(rgba(0,20,50,0.8), rgba(0,0,0,0.9)), url('images/foton_adblue_tank_1778697984394.png');background-size:cover;background-position:center; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
-    <div class="mod-num" style="font-size: 16px; letter-spacing: 5px; color: var(--blue3); margin-bottom: 20px;">MÓDULO 13</div>
+    <div class="mod-num" style="font-size: 16px; letter-spacing: 5px; color: var(--blue3); margin-bottom: 20px;">MÓDULO 04</div>
     <div class="mod-title" style="font-size: 80px; margin-bottom: 30px;">DPF<br>+<br>Urea</div>
     <div class="mod-desc" style="font-size: 24px; max-width: 800px; margin: 0 auto; color: white;">El sistema de postratamiento de gases. Ignorarlo es el error más caro que puede cometer un operador.</div>
   </div>
@@ -839,7 +1248,7 @@ footer{position:fixed;bottom:0;left:0;right:0;z-index:100;height:36px;background
         </div>
       </div>
       <div class="alert alert-blue" style="margin-top:20px; background:rgba(0,87,184,0.2); border:none; color:white;">
-        <span class="alert-icon">💡</span>
+        <span class="alert-icon"><i class="fa-solid fa-lightbulb"></i></span>
         <div><strong>Recuerda:</strong> El DPF se limpia "quemando" el hollín. Requiere alta temperatura.</div>
       </div>
     </div>
@@ -967,15 +1376,15 @@ footer{position:fixed;bottom:0;left:0;right:0;z-index:100;height:36px;background
         Solución de urea al 32.5% que convierte los gases tóxicos en nitrógeno y vapor de agua.
       </div>
       <div class="alert alert-red" style="margin-bottom:16px">
-        <span class="alert-icon">🚫</span>
+        <span class="alert-icon"><i class="fa-solid fa-ban"></i></span>
         <div><strong>Si el Urea se vacía:</strong><br>El motor entra en modo de emergencia y pierde potencia hasta detenerse.</div>
       </div>
       <div class="alert alert-amber" style="margin-bottom:16px">
-        <span class="alert-icon">⚠️</span>
+        <span class="alert-icon"><i class="fa-solid fa-triangle-exclamation"></i></span>
         <div><strong>¡NUNCA MEZCLAR!</strong><br>El depósito de Urea tiene tapón AZUL. El Diésel tapón NEGRO.</div>
       </div>
       <div class="alert alert-blue">
-        <span class="alert-icon">💧</span>
+        <span class="alert-icon"><i class="fa-solid fa-droplet"></i></span>
         <div><strong>Consumo:</strong> 3-5% del consumo de diésel. Rellena en cada servicio.</div>
       </div>
     </div>
@@ -997,7 +1406,7 @@ footer{position:fixed;bottom:0;left:0;right:0;z-index:100;height:36px;background
 <!-- ══════════ SLIDE 18: OPERACIÓN TITLE ══════════ -->
 <div class="slide" data-module="OPERACIÓN">
   <div class="s-module" style="height:100%;background-image:linear-gradient(rgba(0,20,50,0.8), rgba(0,0,0,0.9)), url('images/foton_operator_inspection_1778698004762.png');background-size:cover;background-position:center; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
-    <div class="mod-num" style="font-size: 16px; letter-spacing: 5px; color: var(--blue3); margin-bottom: 20px;">MÓDULO 18</div>
+    <div class="mod-num" style="font-size: 16px; letter-spacing: 5px; color: var(--blue3); margin-bottom: 20px;">MÓDULO 05</div>
     <div class="mod-title" style="font-size: 80px; margin-bottom: 30px;">Operación<br>Diaria</div>
     <div class="mod-desc" style="font-size: 24px; max-width: 800px; margin: 0 auto; color: white;">Inspección, niveles, manejo seguro y conducción económica. La diferencia entre un camión que dura 10 años y uno que dura 3.</div>
   </div>
@@ -1031,8 +1440,15 @@ footer{position:fixed;bottom:0;left:0;right:0;z-index:100;height:36px;background
 </div>
 <!-- ══════════ SLIDE 19b: BAJAR CABINA ══════════ -->
 <div class="slide" data-module="OPERACIÓN" data-audience="operador">
-  <div style="height:100%;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden;">
-    <img src="img_cabina2.jpg" style="width:100%;height:100%;object-fit:contain;">
+  <div class="xs">
+    <div class="xs-head"><div class="slide-eyebrow">Módulo 5 · Operación</div><div class="slide-title">Bajar cabina.</div><p class="xs-lede">Para bajar nuestra cabina, es indispensable llevar a cabo las siguientes recomendaciones:</p></div>
+    <div class="xg xg-cab">
+      <div class="xph xph-cab"><img src="images/md/cabina.jpg" alt="Cabina abatida de un tractocamión"></div>
+      <div class="xstep"><span class="xnum">1</span><div><h4>Área libre</h4><p>Tener un área libre de personas y objetos.</p><div class="xico"><i class="fa-solid fa-people-group"></i><i class="fa-solid fa-toolbox"></i></div></div></div>
+      <div class="xstep"><span class="xnum">2</span><div><h4>Avisa en voz alta</h4><p>Con voz fuerte, indicar <b>“BAJA CABINA”</b>.</p><div class="xico"><i class="fa-solid fa-bullhorn"></i></div></div></div>
+      <div class="xstep xwide"><span class="xnum">3</span><div><h4>Siempre por fuera</h4><p>Para llevar a cabo este proceso, es indispensable hacerlo por fuera, que sus rodillas peguen con el neumático y su mano <i class="fa-solid fa-hand"></i> izquierda sostenga la cabina.</p><div class="xalert red"><i class="fa-solid fa-circle-xmark"></i><span><b>NUNCA</b> colocarse entre la cabina y la aplicación.</span></div></div></div>
+      <div class="xstep xok"><span class="xnum"><i class="fa-solid fa-lock"></i></span><div><h4>Antes de mover la unidad</h4><p>Una vez que bajó la cabina, cerciórese de poner todos y cada uno de los seguros antes de mover la unidad.</p></div></div>
+    </div>
   </div>
 </div>
 
@@ -1044,7 +1460,7 @@ footer{position:fixed;bottom:0;left:0;right:0;z-index:100;height:36px;background
     <div style="position:absolute;top:15%;left:10%;font-size:40px;opacity:0.15;color:#E8414A;">⚠</div>
     <div style="position:absolute;top:20%;right:15%;font-size:32px;opacity:0.1;color:#F59E0B;">⚙</div>
     <div style="position:absolute;bottom:20%;left:20%;font-size:28px;opacity:0.1;color:#4D9BF0;">💡</div>
-    <div class="mod-num" style="font-size:16px;letter-spacing:5px;color:var(--blue3);margin-bottom:20px;">MÓDULO · TABLERO</div>
+    <div class="mod-num" style="font-size:16px;letter-spacing:5px;color:var(--blue3);margin-bottom:20px;">MÓDULO 06 · TABLERO</div>
     <div class="mod-title" style="font-size:70px;margin-bottom:30px;line-height:1;">Testigos<br>de Tablero</div>
     <div class="mod-desc" style="font-size:20px;max-width:700px;margin:0 auto;color:rgba(255,255,255,0.65);">50+ indicadores organizados por urgencia. Saber leerlos en 3 segundos puede salvar el motor — o tu vida.</div>
     <div style="display:flex;gap:20px;margin-top:30px;flex-wrap:wrap;justify-content:center;">
@@ -1337,7 +1753,7 @@ footer{position:fixed;bottom:0;left:0;right:0;z-index:100;height:36px;background
 <div class="slide" data-module="BOTONERÍA">
   <div class="s-module" style="height:100%;background:linear-gradient(135deg,#050d1a 0%,#071428 100%);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;position:relative;overflow:hidden;">
     <div class="grid-bg"></div>
-    <div class="mod-num" style="font-size:16px;letter-spacing:5px;color:var(--blue3);margin-bottom:20px;">MÓDULO · BOTONERÍA</div>
+    <div class="mod-num" style="font-size:16px;letter-spacing:5px;color:var(--blue3);margin-bottom:20px;">MÓDULO 07 · BOTONERÍA</div>
     <div class="mod-title" style="font-size:70px;margin-bottom:30px;line-height:1;">Botonería<br>de Cabina</div>
     <div class="mod-desc" style="font-size:20px;max-width:700px;margin:0 auto;color:rgba(255,255,255,0.65);">Cada botón, mando y control de la cabina Foton — para qué sirve y cuándo usarlo correctamente.</div>
     <div style="display:flex;gap:16px;margin-top:30px;flex-wrap:wrap;justify-content:center;">
@@ -1536,20 +1952,61 @@ footer{position:fixed;bottom:0;left:0;right:0;z-index:100;height:36px;background
 </div>
 <!-- ══════════ SLIDE 21: MANEJO SEGURO ══════════ -->
 <div class="slide" data-module="OPERACIÓN" data-audience="operador">
-  <div style="height:100%;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden;">
-    <img src="img_manejo2.jpg" style="width:100%;height:100%;object-fit:contain;">
+  <div class="xs">
+    <div class="xs-head"><div class="slide-eyebrow">Módulo 5 · Operación</div><div class="slide-title">Manejo seguro.</div></div>
+    <div class="xg xg-man">
+      <div class="xc xc-ph"><img src="images/md/palanca.jpg" alt="Mano en la palanca de cambios"><div><h4><i class="fa-solid fa-circle-check"></i> Inicie movimiento siempre en 1ra.</h4><p class="em"><i class="fa-solid fa-check"></i> Embrague con suavidad.</p></div></div>
+      <div class="xc"><h4><i class="fa-solid fa-circle-check"></i> Mantenga libre el pedal de embrague.</h4><p class="em"><i class="fa-solid fa-check"></i> Con suavidad.</p><p class="em"><i class="fa-solid fa-check"></i> Evite el consumo innecesario de combustible.</p><div class="xgauge"><i class="fa-solid fa-gas-pump"></i><span></span><i class="fa-solid fa-leaf"></i></div></div>
+      <div class="xc xc-ph"><img src="images/md/carretera.jpg" alt="Camión FOTON en carretera"><div class="xspeeds"><div><small>Velocidad en ciudad</small><b>50<em>km/h</em></b></div><div><small>En carretera</small><b>80<em>km/h</em></b></div></div></div>
+      <div class="xc xc-list"><ol>
+        <li>Cambia el aceite y los filtros de forma regular.</li>
+        <li><b>Comprueba el estado del motor.</b></li>
+        <li><b>Planifica las rutas y ten en cuenta el tipo de vía.</b></li>
+        <li><b>El peso influye, carga lo necesario.</b></li>
+        <li><b>Comprueba el estado de los neumáticos.</b></li>
+        <li><b>Realiza tu inspección diaria.</b></li>
+      </ol></div>
+      <div class="xc xc-green"><h4><i class="fa-solid fa-circle-check"></i> Al utilizar el freno de motor (escape)</h4><p class="big">NO HAY CONSUMO DE COMBUSTIBLE.</p><div class="xbrake" aria-label="Distancia de 300 metros para usar el freno de motor">
+            <span class="tl"><i class="fa-solid fa-traffic-light"></i></span>
+            <span class="trk"><i class="fa-solid fa-truck"></i></span>
+            <span class="ln"><b>300 m</b></span>
+            <span class="trk"><i class="fa-solid fa-truck"></i></span>
+          </div></div>
+      <div class="xc xc-op"><div><span class="xbadge"><i class="fa-solid fa-leaf"></i> Conducción eficiente</span><p class="quote">Operador, recuerda en todo momento nuestras indicaciones.</p></div><img src="images/md/chasis.png" alt=""></div>
+    </div>
   </div>
 </div>
 <!-- ══════════ SLIDE 21b: VELOCIDAD AERODINÁMICA ══════════ -->
 <div class="slide" data-module="OPERACIÓN" data-audience="operador">
-  <div style="height:100%;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden;">
-    <img src="img_velocidad2.jpg" style="width:100%;height:100%;object-fit:contain;">
+  <div class="xs">
+    <div class="xs-head"><div class="slide-eyebrow">Módulo 5 · Operación</div><div class="slide-title">El exceso de velocidad afecta:</div></div>
+    <div class="xg xg-vel">
+      <div class="xvel-l">
+        <div class="xc xc-list chk"><ul>
+          <li><i class="fa-solid fa-check"></i> El consumo de combustible</li>
+          <li><i class="fa-solid fa-check"></i> El desgaste de las llantas</li>
+          <li><i class="fa-solid fa-check"></i> El motor y otras partes del vehículo</li>
+        </ul></div>
+        <div class="xg xg-4">
+          <div class="xtile"><i class="fa-solid fa-feather"></i><b>Con suavidad</b></div>
+          <div class="xtile"><i class="fa-solid fa-gas-pump"></i><b>Evite el consumo de combustible</b></div>
+          <div class="xtile"><span class="xsp"><small>Ciudad</small>50<em>km/h</em></span><span class="xsp"><small>Carretera</small>80<em>km/h</em></span><b>Velocidad económica</b></div>
+          <div class="xtile"><div class="xbrake" aria-label="Distancia de 300 metros para usar el freno de motor">
+            <span class="tl"><i class="fa-solid fa-traffic-light"></i></span>
+            <span class="trk"><i class="fa-solid fa-truck"></i></span>
+            <span class="ln"><b>300 m</b></span>
+            <span class="trk"><i class="fa-solid fa-truck"></i></span>
+          </div><b>Al utilizar el freno de motor no hay consumo</b></div>
+        </div>
+      </div>
+      <div class="xph xph-aero"><img src="images/md/aero.jpg" alt="Flujo aerodinámico sobre un camión"><div class="xcap">Mantenga libre el pedal de embrague.</div></div>
+    </div>
   </div>
 </div>
 <!-- ══════════ SLIDE 22: MÓDULO 6 — NEUMÁTICOS ══════════ -->
 <div class="slide" data-module="NEUMÁTICOS">
   <div class="s-module" style="height:100%;background-image:linear-gradient(rgba(0,0,0,0.8), rgba(0,20,50,0.9)), url('images/foton_est_a_1778712121826.png');background-size:cover;background-position:center; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
-    <div class="mod-num" style="font-size: 16px; letter-spacing: 5px; color: var(--blue3); margin-bottom: 20px;">MÓDULO 06</div>
+    <div class="mod-num" style="font-size: 16px; letter-spacing: 5px; color: var(--blue3); margin-bottom: 20px;">MÓDULO 08</div>
     <div class="mod-title" style="font-size: 80px; margin-bottom: 30px;">Neumáticos</div>
     <div class="mod-desc" style="font-size: 24px; max-width: 800px; margin: 0 auto; color: white;">El combustible y los neumáticos son los dos mayores costos. El 80% de los problemas de llantas son prevenibles.</div>
   </div>
@@ -1558,7 +2015,7 @@ footer{position:fixed;bottom:0;left:0;right:0;z-index:100;height:36px;background
 <div class="slide" data-module="NEUMÁTICOS">
   <div class="hero-split">
     <div class="hero-content" style="background:var(--ink); color:white;">
-      <div class="slide-eyebrow" style="color:var(--blue3)">Módulo 6 · Neumáticos</div>
+      <div class="slide-eyebrow" style="color:var(--blue3)">Módulo 8 · Neumáticos</div>
       <div class="slide-title" style="color:white; font-size:40px;">Inspección Diaria</div>
       <div class="slide-body" style="color:var(--smoke2); font-size: 20px;">
         Un neumático pierde presión naturalmente. Una llanta baja es peligrosa y costosa.
@@ -1572,7 +2029,7 @@ footer{position:fixed;bottom:0;left:0;right:0;z-index:100;height:36px;background
         </div>
       </div>
       <div class="alert alert-blue" style="background:rgba(0,87,184,0.2); border:none;">
-        <span class="alert-icon">🛞</span>
+        <span class="alert-icon"><i class="fa-solid fa-circle-dot"></i></span>
         <div style="color:white;"><strong>Regla de oro:</strong> Usa siempre manómetro. Hazlo con el neumático frío.</div>
       </div>
     </div>
@@ -1604,14 +2061,47 @@ footer{position:fixed;bottom:0;left:0;right:0;z-index:100;height:36px;background
 </div>
 <!-- ══════════ SLIDE 25: RPM VISUAL ══════════ -->
 <div class="slide" data-module="OPERACIÓN" data-audience="operador">
-  <div style="height:100%;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden;">
-    <img src="img_rpm2.jpg" style="width:100%;height:100%;object-fit:contain;">
+  <div class="xs">
+    <div class="xs-head"><div class="slide-eyebrow">Módulo 5 · Operación</div><div class="slide-title">Cuida las RPM.</div></div>
+    <div class="xg xg-rpm">
+      <div class="xc xc-tach"><svg class="xtach" viewBox="0 0 240 240" role="img" aria-label="Tacómetro de 0 a 4 mil revoluciones por minuto con zona roja entre 3 y 4">
+  <defs><radialGradient id="tg" cx="50%" cy="45%" r="60%"><stop offset="0" stop-color="#1c2230"/><stop offset="1" stop-color="#07090e"/></radialGradient></defs>
+  <circle cx="120" cy="120" r="112" fill="url(#tg)" stroke="rgba(255,255,255,.14)" stroke-width="2"/>
+  <path d="M25.7 93.4 A98 98 0 0 1 153.9 28.1" stroke="#30D158" stroke-width="12" fill="none" stroke-linecap="round"/>
+  <path d="M210.5 82.5 A98 98 0 0 1 189.3 189.3" stroke="#FF453A" stroke-width="12" fill="none"/>
+  <path d="M120 120 L197.6 87.9 A84 84 0 0 1 179.4 179.4 Z" fill="rgba(255,69,58,.28)"/>
+  <line x1="53.5" y1="186.5" x2="45.0" y2="195.0" stroke="rgba(255,255,255,0.7)" stroke-width="2"/><line x1="41.5" y1="181.9" x2="36.8" y2="185.6" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><line x1="34.7" y1="172.2" x2="29.6" y2="175.4" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><line x1="29.2" y1="161.9" x2="23.7" y2="164.4" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><line x1="24.9" y1="150.9" x2="19.2" y2="152.8" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><line x1="27.8" y1="138.3" x2="16.0" y2="140.7" stroke="rgba(255,255,255,0.7)" stroke-width="2"/><line x1="20.3" y1="127.8" x2="14.3" y2="128.3" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><line x1="20.1" y1="116.1" x2="14.1" y2="115.8" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><line x1="21.2" y1="104.4" x2="15.3" y2="103.4" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><line x1="23.8" y1="92.9" x2="18.0" y2="91.2" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><line x1="33.2" y1="84.0" x2="22.1" y2="79.4" stroke="rgba(255,255,255,0.7)" stroke-width="2"/><line x1="32.8" y1="71.1" x2="27.5" y2="68.2" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><line x1="39.1" y1="61.2" x2="34.2" y2="57.7" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><line x1="46.6" y1="52.1" x2="42.2" y2="48.0" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><line x1="55.1" y1="44.0" x2="51.2" y2="39.4" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><line x1="67.8" y1="41.8" x2="61.1" y2="31.9" stroke="rgba(255,255,255,0.7)" stroke-width="2"/><line x1="74.6" y1="30.9" x2="71.9" y2="25.6" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><line x1="85.4" y1="26.2" x2="83.3" y2="20.6" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><line x1="96.7" y1="22.8" x2="95.3" y2="16.9" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><line x1="108.2" y1="20.7" x2="107.5" y2="14.7" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><line x1="120.0" y1="26.0" x2="120.0" y2="14.0" stroke="rgba(255,255,255,0.7)" stroke-width="2"/><line x1="131.8" y1="20.7" x2="132.5" y2="14.7" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><line x1="143.3" y1="22.8" x2="144.7" y2="16.9" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><line x1="154.6" y1="26.2" x2="156.7" y2="20.6" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><line x1="165.4" y1="30.9" x2="168.1" y2="25.6" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><line x1="172.2" y1="41.8" x2="178.9" y2="31.9" stroke="rgba(255,255,255,0.7)" stroke-width="2"/><line x1="184.9" y1="44.0" x2="188.8" y2="39.4" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><line x1="193.4" y1="52.1" x2="197.8" y2="48.0" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><line x1="200.9" y1="61.2" x2="205.8" y2="57.7" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><line x1="207.2" y1="71.1" x2="212.5" y2="68.2" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><line x1="206.8" y1="84.0" x2="217.9" y2="79.4" stroke="rgba(255,255,255,0.7)" stroke-width="2"/><line x1="216.2" y1="92.9" x2="222.0" y2="91.2" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><line x1="218.8" y1="104.4" x2="224.7" y2="103.4" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><line x1="219.9" y1="116.1" x2="225.9" y2="115.8" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><line x1="219.7" y1="127.8" x2="225.7" y2="128.3" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><line x1="212.2" y1="138.3" x2="224.0" y2="140.7" stroke="rgba(255,255,255,0.7)" stroke-width="2"/><line x1="215.1" y1="150.9" x2="220.8" y2="152.8" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><line x1="210.8" y1="161.9" x2="216.3" y2="164.4" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><line x1="205.3" y1="172.2" x2="210.4" y2="175.4" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><line x1="198.5" y1="181.9" x2="203.2" y2="185.6" stroke="rgba(255,255,255,0.3)" stroke-width="1"/><line x1="186.5" y1="186.5" x2="195.0" y2="195.0" stroke="rgba(255,255,255,0.7)" stroke-width="2"/>
+  <text x="66.3" y="179.7" text-anchor="middle" fill="#fff" font-size="18" font-weight="800" font-family="Archivo,Inter,sans-serif">0</text><text x="49.8" y="96.9" text-anchor="middle" fill="#fff" font-size="18" font-weight="800" font-family="Archivo,Inter,sans-serif">1</text><text x="120.0" y="50.0" text-anchor="middle" fill="#fff" font-size="18" font-weight="800" font-family="Archivo,Inter,sans-serif">2</text><text x="190.2" y="96.9" text-anchor="middle" fill="#fff" font-size="18" font-weight="800" font-family="Archivo,Inter,sans-serif">3</text><text x="173.7" y="179.7" text-anchor="middle" fill="#fff" font-size="18" font-weight="800" font-family="Archivo,Inter,sans-serif">4</text>
+  <line x1="120" y1="120" x2="202.8" y2="96.7" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="120" cy="120" r="12" fill="#0A84FF" stroke="#fff" stroke-width="2"/>
+  <text x="120" y="190" text-anchor="middle" fill="rgba(235,235,245,.6)" font-size="11" font-family="Inter,sans-serif" font-weight="600">x1000 r/min</text>
+</svg><div class="xcap2">Vehículo pesado</div><div class="xlegend"><span><i style="background:#30D158"></i>Zona de trabajo</span><span><i style="background:#FF453A"></i>Zona roja</span></div></div>
+      <div class="xrpm-r">
+        <div class="xalert red big"><i class="fa-solid fa-triangle-exclamation"></i><span>Si llegamos a esta zona, estas son las consecuencias:</span></div>
+        <div class="xcons"><img src="images/md/biela.jpg" alt="Cigüeñal y biela rotos"><p><i class="fa-solid fa-check"></i> Falla catastrófica por rotura de biela.</p></div>
+        <div class="xcons"><img src="images/md/bloque.jpg" alt="Bloque de motor fracturado"><p><i class="fa-solid fa-check"></i> Daño estructural grave al bloque del motor.</p></div>
+        <div class="xcons noimg"><span class="xcons-ico"><i class="fa-solid fa-sack-dollar"></i></span><p><i class="fa-solid fa-check"></i> Pérdida total del motor y altos costos operativos.</p></div>
+      </div>
+    </div>
   </div>
 </div>
 <!-- ══════════ SLIDE 25b: CONDUCCIÓN ECO ══════════ -->
 <div class="slide" data-module="OPERACIÓN" data-audience="operador">
-  <div style="height:100%;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden;">
-    <img src="img_eco2.jpg" style="width:100%;height:100%;object-fit:contain;">
+  <div class="xs">
+    <div class="xs-head"><div class="slide-eyebrow">Módulo 5 · Operación</div><div class="slide-title">Conducción económica.</div></div>
+    <div class="xg xg-eco">
+      <div class="xeco-col">
+        <div class="xc xmini"><i class="fa-solid fa-oil-can"></i><p>Cambia el aceite y los filtros de forma regular.</p></div>
+        <div class="xc xmini"><i class="fa-solid fa-weight-hanging"></i><p>El peso influye, carga lo necesario.</p></div>
+        <div class="xc xmini"><i class="fa-solid fa-circle-dot"></i><p>Comprueba el estado de los neumáticos.</p></div>
+      </div>
+      <div class="xph xph-eco"><img src="images/md/neumatico.jpg" alt="Operador revisando la presión de un neumático"><span class="xbadge"><i class="fa-solid fa-leaf"></i> Conducción eficiente</span></div>
+      <div class="xeco-col">
+        <div class="xc xmini"><i class="fa-solid fa-route"></i><p>Planifica las <b>rutas</b> y ten en cuenta el <b>tipo de vía</b>.</p></div>
+        <div class="xc xmini"><i class="fa-solid fa-window-maximize"></i><p>Recuerda las ventanillas <b>arriba</b>.</p></div>
+        <div class="xc xtruck"><div class="xgauge"><i class="fa-solid fa-gas-pump"></i><span></span><i class="fa-solid fa-leaf"></i></div><img src="images/md/chasis.png" alt=""></div>
+      </div>
+    </div>
   </div>
 </div>
 <!-- ══════════ SLIDE 26: QUIZ OPERACIÓN ══════════ -->
@@ -1643,7 +2133,6 @@ footer{position:fixed;bottom:0;left:0;right:0;z-index:100;height:36px;background
   <div class="s-cover" style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background-image:linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.85)), url('images/foton_epic_finale_1779129020717.png');background-size:cover;background-position:center;">
     <div class="grid-bg"></div>
     <div class="cover-content">
-      <div style="font-size:56px;margin-bottom:16px">🏆</div>
       <div class="cover-eyebrow">Curso completado</div>
       <div class="cover-title" style="font-size:clamp(36px,6vw,60px)">Eres un<br><span>Master Driver</span><br>Foton</div>
       <div class="cover-sub">Conoces tu camión, dominas la AMT, entiendes Euro VI y sabes cómo cuidar el DPF y el Urea. Eso es lo que diferencia a un operador profesional.</div>
@@ -1654,30 +2143,21 @@ footer{position:fixed;bottom:0;left:0;right:0;z-index:100;height:36px;background
         <div class="cover-pill">✓ DPF + Urea</div>
         <div class="cover-pill">✓ Operación segura</div>
       </div>
+      <div class="close-sign"><img src="images/foton_logo_white.png" alt="FOTON"><span>FOTON México · Programa Master Driver</span></div>
     </div>
   </div>
 </div>
 
 </div><!-- /slides-container -->
 
-<button class="nav-btn" id="nav-prev" onclick="prevSlide()" disabled>‹</button>
-<button class="nav-btn" id="nav-next" onclick="nextSlide()">›</button>
-
-<footer>
-  <div class="footer-l">FOTON MÉXICO · MASTER DRIVER 2.0</div>
-    <div class="footer-keys">
-    <button onclick="document.documentElement.requestFullscreen?.()" 
-      style="font-family:var(--mono);font-size:9px;padding:4px 10px;
-      border:1px solid var(--smoke3);border-radius:4px;
-      background:transparent;cursor:pointer;color:var(--smoke);
-      transition:all 0.2s; font-weight: 600"
-      onmouseover="this.style.color='var(--blue)';this.style.borderColor='var(--blue)';this.style.background='var(--blue-lt)'"
-      onmouseout="this.style.color='var(--smoke)';this.style.borderColor='var(--smoke3)';this.style.background='transparent'">
-      ⛶ PANTALLA COMPLETA
-    </button>
-  </div>
-  <div class="footer-r">USO INTERNO · CAPACITACIÓN</div>
-</footer>
+<img class="brandmark" src="images/foton_emblem_white.png" alt="" aria-hidden="true">
+<nav class="hud" aria-label="Controles de la presentación">
+  <button id="nav-prev" onclick="prevSlide()" aria-label="Anterior" disabled><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+  <span class="cnt" id="slideNum">01 / 41</span>
+  <button id="nav-next" onclick="nextSlide()" aria-label="Siguiente"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+  <span class="sep"></span>
+  <button class="fsb" onclick="toggleFS()" aria-label="Pantalla completa"><svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></svg></button>
+</nav>
 
 
 <script>
@@ -2015,5 +2495,87 @@ document.addEventListener('touchend',e=>{
 
 init();
 </script>
+<script>
+/* ── Mejoras de navegación: HUD, capítulos, rueda, enlace directo, inactividad ── */
+(function(){
+  var hud = document.getElementById('slideNum');
+  var baseUpdate = updateNav;
+  updateNav = function(){
+    baseUpdate();
+    document.body.classList.toggle('cover-on', currentSlide === 0 || currentSlide === totalSlides-1);
+    hud.innerHTML = '<b>' + String(currentSlide+1).padStart(2,'0') + '</b> / ' + String(totalSlides).padStart(2,'0');
+    if (history.replaceState) history.replaceState(null, '', '#' + (currentSlide+1));
+    var inner = slides[currentSlide].querySelector('.hero-content, .quiz-wrap');
+    if (inner) inner.scrollTop = 0;
+  };
+  var lock = false;
+  var baseGo = goTo;
+  goTo = function(n){
+    if (n < 0 || n >= totalSlides || n === currentSlide) return;
+    baseGo(n);
+    lock = true; setTimeout(function(){ lock = false; }, 700);
+  };
+
+  /* Capítulos: cada segmento de la barra superior salta al inicio de su módulo */
+  var mods = [];
+  Array.prototype.forEach.call(slides, function(s, i){
+    var m = s.dataset.module;
+    if (!mods.some(function(x){ return x.m === m; })) mods.push({m: m, i: i});
+  });
+  Array.prototype.forEach.call(document.getElementById('hdrDots').children, function(seg, k){
+    if (!mods[k]) return;
+    seg.title = mods[k].m.charAt(0) + mods[k].m.slice(1).toLowerCase();
+    seg.addEventListener('click', function(){ goTo(mods[k].i); });
+  });
+
+  /* Teclado adicional (sin interferir con los que ya existen) */
+  document.addEventListener('keydown', function(e){
+    if (document.getElementById('testigoModal').classList.contains('open')) return;
+    var k = e.key;
+    if (k === ' ' || k === 'PageDown') { e.preventDefault(); nextSlide(); }
+    else if (k === 'PageUp') { e.preventDefault(); prevSlide(); }
+    else if (k === 'Home') { e.preventDefault(); goTo(0); }
+    else if (k === 'End') { e.preventDefault(); goTo(totalSlides-1); }
+  });
+
+  /* Rueda o trackpad: respeta el scroll interno de la diapositiva */
+  window.addEventListener('wheel', function(e){
+    if (document.getElementById('testigoModal').classList.contains('open')) return;
+    var dy = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+    var el = e.target;
+    while (el && el !== document.body) {
+      if (el.scrollHeight > el.clientHeight + 4 && /auto|scroll/.test(getComputedStyle(el).overflowY)) {
+        var atTop = el.scrollTop <= 0, atBot = el.scrollTop + el.clientHeight >= el.scrollHeight - 2;
+        if ((dy > 0 && !atBot) || (dy < 0 && !atTop)) return;
+        break;
+      }
+      el = el.parentElement;
+    }
+    if (lock || Math.abs(dy) < 18) return;
+    dy > 0 ? nextSlide() : prevSlide();
+  }, {passive: true});
+
+  /* Pantalla completa */
+  window.toggleFS = function(){
+    var d = document, el = d.documentElement;
+    if (!d.fullscreenElement && !d.webkitFullscreenElement) (el.requestFullscreen || el.webkitRequestFullscreen || function(){}).call(el);
+    else (d.exitFullscreen || d.webkitExitFullscreen || function(){}).call(d);
+  };
+
+  /* Oculta los controles cuando el presentador no mueve el mouse */
+  var idleT;
+  function wake(){
+    document.body.classList.remove('idle');
+    clearTimeout(idleT);
+    idleT = setTimeout(function(){ document.body.classList.add('idle'); }, 3000);
+  }
+  ['mousemove','touchstart','keydown'].forEach(function(ev){ window.addEventListener(ev, wake, {passive: true}); });
+  wake();
+
+  var start = parseInt((location.hash || '').slice(1), 10);
+  if (!isNaN(start) && start > 1 && start <= totalSlides) goTo(start - 1); else updateNav();
+})();
+</script>
+
 </body>
 </html>
