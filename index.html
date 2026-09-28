@@ -687,6 +687,23 @@ img[src^="img_pb"]{border-radius:20px!important}
   .slide [style*="repeat(4,1fr)"][style*="flex:1"]{grid-template-columns:1fr!important}
   .slide [style*="repeat(4,1fr)"][style*="flex:1"]>div{border-right:0!important}
 }
+/* ── Identidad FOTON ── */
+.hdr-brand{gap:12px}
+.hdr-brand-dot{display:none}
+.hdr-logo{height:20px;width:auto;display:block}
+.hdr-div{width:1px;height:18px;background:rgba(255,255,255,.22)}
+.hdr-brand b{margin-left:0;font-family:var(--exo);font-weight:500;color:rgba(235,235,245,.72)}
+.cover-logo{height:clamp(40px,5.2vw,68px);width:auto;margin-bottom:clamp(6px,1.4vh,16px);filter:drop-shadow(0 10px 30px rgba(10,132,255,.35))}
+.close-sign{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:clamp(14px,3vh,30px);padding-top:clamp(14px,3vh,26px);border-top:1px solid rgba(255,255,255,.14)}
+.close-sign img{height:clamp(30px,3.4vw,44px);width:auto}
+.close-sign span{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(235,235,245,.55)}
+.slide[data-module="FIN"] .cover-title{font-size:clamp(44px,6.2vw,92px)!important}
+.slide[data-module="FIN"] .cover-content{gap:14px}
+.slide[data-module="FIN"] .cover-sub{max-width:640px}
+.brandmark{position:fixed;right:clamp(14px,2vw,28px);bottom:clamp(18px,2.8vh,30px);width:30px;height:30px;opacity:.4;z-index:215;pointer-events:none;transition:opacity .4s}
+body.cover-on .brandmark{opacity:0}
+@media (max-width:640px){.hdr-logo{height:16px}.hdr-div{display:none}.brandmark{display:none}}
+
 @media (prefers-reduced-motion:reduce){
   .slide,.slide.active{transition:opacity .3s!important;transform:none!important;filter:none!important}
   *{animation:none!important}
@@ -700,7 +717,7 @@ img[src^="img_pb"]{border-radius:20px!important}
 <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
 
 <header>
-  <div class="hdr-brand"><div class="hdr-brand-dot"></div>FOTON <b>Master Driver 2.0</b></div>
+  <div class="hdr-brand"><img class="hdr-logo" src="images/foton_logo_white.png" alt="FOTON"><i class="hdr-div"></i><b>Master Driver 2.0</b></div>
   <div class="hdr-mid" id="hdrDots"></div>
   <div class="hdr-info">
     <div class="hdr-audience-badge" id="audienceBadge">AMBOS</div>
@@ -716,6 +733,7 @@ img[src^="img_pb"]{border-radius:20px!important}
   <div class="s-cover" style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background-image:linear-gradient(rgba(0,0,0,0.7), rgba(0,20,40,0.9)), url('images/foton_brand_logo_visual_1778698020628.png');background-size:cover;background-position:center;">
     <div class="grid-bg"></div>
     <div class="cover-content" style="text-align: center;">
+      <img class="cover-logo" src="images/foton_logo_white.png" alt="FOTON">
       <div class="cover-eyebrow" style="font-size: 16px; margin-bottom: 10px; justify-content: center;">Programa Oficial de FOTON México</div>
       <div class="cover-title" style="font-size: 110px; text-shadow: 0 10px 40px rgba(0,87,184,0.5);">MASTER<br><span style="color:#FFF;">DRIVER</span><br><span style="font-size:80px; color:var(--blue3);">2.0</span></div>
       <div class="cover-sub" style="font-size: 22px; max-width: 800px; margin-top: 20px;">Línea Foton S3–S12 · Euro VI + Euro V SCR</div>
@@ -1871,7 +1889,6 @@ img[src^="img_pb"]{border-radius:20px!important}
   <div class="s-cover" style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background-image:linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.85)), url('images/foton_epic_finale_1779129020717.png');background-size:cover;background-position:center;">
     <div class="grid-bg"></div>
     <div class="cover-content">
-      <div style="font-size:56px;margin-bottom:16px">🏆</div>
       <div class="cover-eyebrow">Curso completado</div>
       <div class="cover-title" style="font-size:clamp(36px,6vw,60px)">Eres un<br><span>Master Driver</span><br>Foton</div>
       <div class="cover-sub">Conoces tu camión, dominas la AMT, entiendes Euro VI y sabes cómo cuidar el DPF y el Urea. Eso es lo que diferencia a un operador profesional.</div>
@@ -1882,12 +1899,14 @@ img[src^="img_pb"]{border-radius:20px!important}
         <div class="cover-pill">✓ DPF + Urea</div>
         <div class="cover-pill">✓ Operación segura</div>
       </div>
+      <div class="close-sign"><img src="images/foton_logo_white.png" alt="FOTON"><span>FOTON México · Programa Master Driver</span></div>
     </div>
   </div>
 </div>
 
 </div><!-- /slides-container -->
 
+<img class="brandmark" src="images/foton_emblem_white.png" alt="" aria-hidden="true">
 <nav class="hud" aria-label="Controles de la presentación">
   <button id="nav-prev" onclick="prevSlide()" aria-label="Anterior" disabled><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
   <span class="cnt" id="slideNum">01 / 41</span>
@@ -2239,6 +2258,7 @@ init();
   var baseUpdate = updateNav;
   updateNav = function(){
     baseUpdate();
+    document.body.classList.toggle('cover-on', currentSlide === 0 || currentSlide === totalSlides-1);
     hud.innerHTML = '<b>' + String(currentSlide+1).padStart(2,'0') + '</b> / ' + String(totalSlides).padStart(2,'0');
     if (history.replaceState) history.replaceState(null, '', '#' + (currentSlide+1));
     var inner = slides[currentSlide].querySelector('.hero-content, .quiz-wrap');
